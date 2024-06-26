@@ -18,14 +18,16 @@ data class Person(
     var cellphone: String?,
     var photo: String?
 ) {
-    fun toMeta() = Meta(id, name, country)
+    fun toMeta() = Meta(id, name, age, country)
 
     data class Meta (
         val id: PersonIdType,
         val name: String,
+        val age: Int,
         val country: String
     )
 }
+
 
 enum class Gender {
     UNKNOWN, MALE, FEMALE

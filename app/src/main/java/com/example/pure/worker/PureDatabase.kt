@@ -49,6 +49,7 @@ abstract class PureDatabase: RoomDatabase() {
         data class Meta (
             val id: String,
             val name: String,
+            val age: Int,
             val country: String
         )
     }
@@ -67,16 +68,16 @@ abstract class PureDatabase: RoomDatabase() {
         @Query("SELECT * FROM $TABLE_NAME WHERE id = :id")
         fun readAll(id: String): List<HumanMO>
 
-        @Query("SELECT id, name, country FROM $TABLE_NAME WHERE id = :id LIMIT 1")
+        @Query("SELECT id, name, age, country FROM $TABLE_NAME WHERE id = :id LIMIT 1")
         fun readMeta(id: String): HumanMO.Meta
 
-        @Query("SELECT id, name, country FROM $TABLE_NAME WHERE name LIKE '%' || :name || '%'")
+        @Query("SELECT id, name, age, country FROM $TABLE_NAME WHERE name LIKE '%' || :name || '%'")
         fun readMetaAllMatchName(name: String): List<HumanMO.Meta>
 
-        @Query("SELECT id, name, country FROM $TABLE_NAME")
+        @Query("SELECT id, name, age, country FROM $TABLE_NAME")
         fun readAllMeta(): List<HumanMO.Meta>
 
-        @Query("SELECT id, name, country FROM $TABLE_NAME WHERE id = :id")
+        @Query("SELECT id, name, age, country FROM $TABLE_NAME WHERE id = :id")
         fun readAllMeta(id: String): List<HumanMO.Meta>
 
         @Insert(onConflict = OnConflictStrategy.REPLACE)

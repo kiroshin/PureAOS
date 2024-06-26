@@ -29,6 +29,7 @@ class PersonWebRepository: PersonWebWork {
 
 }
 
+
 private fun HTTPRandomuserAccess.User.toEntity(): Person = Person(
     id = login.uuid ?: "",
     name = "${name.first ?: ""} ${name.last ?: ""}".trim(),

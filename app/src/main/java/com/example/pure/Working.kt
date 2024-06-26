@@ -12,6 +12,7 @@ interface PersonWebWork {
     suspend fun getAllPerson(): List<Person>
 }
 
+
 interface PersonDBWork {
     suspend fun readAllPersonMeta(): List<Person.Meta>
     suspend fun readAllPerson(id: PersonIdType): Person

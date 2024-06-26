@@ -40,6 +40,7 @@ class PersonDBRepository(
     // protected fun finalize() = println("* GC KILLED: ${this}")
 }
 
+
 private fun Person.toModel(): PureDatabase.HumanMO {
     return PureDatabase.HumanMO(
         id = id,
@@ -54,13 +55,16 @@ private fun Person.toModel(): PureDatabase.HumanMO {
     )
 }
 
+
 private fun PureDatabase.HumanMO.Meta.toValue(): Person.Meta {
     return Person.Meta(
-        id = this.id,
-        name = this.name,
-        country = this.country
+        id = id,
+        name = name,
+        age = age,
+        country = country
     )
 }
+
 
 private fun PureDatabase.HumanMO.toEntity(): Person {
     return Person(

@@ -14,10 +14,12 @@ import com.example.pure.Serving
 
 typealias LaunchViewBlock = (String) -> Unit
 
+
 sealed class Navi(val route: String) {
     data object Home: Navi("home")
     data object Detail: Navi("detail")
 }
+
 
 @Composable
 fun ContentNavHost(service: Serving,
@@ -29,7 +31,7 @@ fun ContentNavHost(service: Serving,
         modifier = modifier) {
         composable(Navi.Home.route) {
             onTitleChange("Home")
-            HomeView(appState = service.appState, launchDetail = { id ->
+            HomeView(appState = service.appState, launcher = { id ->
                 navController.navigate(Navi.Detail.route + "/$id")
             } )
         }

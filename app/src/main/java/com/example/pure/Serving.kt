@@ -14,6 +14,7 @@ interface Serving {
     val setFieldVisibleAction: SetFieldVisibleUsecase
 }
 
+
 typealias LoadPersonUsecase = suspend (PersonIdType) -> Person
 typealias SetFieldVisibleUsecase = suspend (Boolean) -> Unit
 
