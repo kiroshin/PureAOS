@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("kotlin-kapt")
 }
 
 android {
@@ -66,4 +67,27 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    //
+    // 데이터스토어
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+    // 룸
+    implementation("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+    annotationProcessor("androidx.room:room-compiler:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+    // 내비게이션
+    implementation("androidx.navigation:navigation-compose:2.7.7")
+    // 뷰모델
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    // 런타임 컴포즈 - StateFlow LifeCycle
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
+    // Retrofit & Gson : https://github.com/square/retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    // Coil
+    implementation("io.coil-kt:coil-compose:2.6.0")
+    // 코루틴 테스트
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1")
+    //
+
 }
