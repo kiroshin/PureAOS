@@ -30,19 +30,7 @@ fun InlineKeyValueCardCell(uid: String, key: String, value: String, onClick: (St
             .clickable { onClick(uid) },
         shape = RoundedCornerShape(4.dp)
     ) {
-        Row(
-            modifier = Modifier.height((4 * 14).dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(text = key,
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(8.dp).width(96.dp)
-            )
-            Text(text = value,
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(8.dp).fillMaxWidth()
-            )
-        }
+        InlineKeyValueText(key, value, (4 * 20), (4 * 12), MaterialTheme.typography.titleMedium)
     }
 }
 

@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -37,9 +36,9 @@ import kotlinx.coroutines.flow.map
 
 @Composable
 fun HomeView(appState: AppState, launcher: LaunchViewBlock) {
-    val thatState = remember { appState.stored { HomeThat(it) } }
-    val isRegion by thatState.map { it.isRegion }.collectAsStateWithLifecycle(initialValue = true)
-    val itemState by thatState.map { when (it.last) {
+    val rogerThat = remember { appState.stored { HomeThat(it) } }
+    val isRegion by rogerThat.map { it.isRegion }.collectAsStateWithLifecycle(initialValue = true)
+    val itemState by rogerThat.map { when (it.last) {
         Roger.Signal.SUCCESS -> { UiState.Success(it.metas.map { pm -> HomeItem(pm) }) }
         Roger.Signal.FAILURE -> { UiState.Failure("데이터를 로드할 수 없습니다.") }
         else -> { UiState.Ready }
@@ -54,7 +53,7 @@ fun HomeView(appState: AppState, launcher: LaunchViewBlock) {
     }
     itemState.onFailure {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text(text = it)
+            Text(text = "웁스... ${it}")
         }
     }
 }

@@ -21,8 +21,8 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
-class DetailViewModel(private val appState: AppState,
-                      private val loadPersonAction: LoadPersonUsecase,
+class DetailViewModel(appState: AppState,
+                      loadPersonAction: LoadPersonUsecase,
                       destID: PersonIdType): ViewModel() {
     companion object {
         fun by(s: AppState, l: LoadPersonUsecase, t: PersonIdType) = viewModelFactory { initializer {
@@ -42,14 +42,6 @@ class DetailViewModel(private val appState: AppState,
 
 //    init { viewModelScope.launch {
 //    } }
-
-    init {
-        println("* INIT: DetailViewModel")
-        val j = UiState.Ready
-        val k = UiState.Success("hello")
-        val h = UiState.Failure("")
-        val d = UiState.Loading(27)
-    }
 
     data class Item(
         var name: String,
