@@ -12,9 +12,11 @@ package com.example.pure.worker
 
 import android.content.Context
 import com.example.pure.PersonDBWork
+import com.example.pure.model.Fizzle
 import com.example.pure.model.Gender
 import com.example.pure.model.Person
 import com.example.pure.model.PersonIdType
+import java.io.IOException
 
 class PersonDBRepository(
     context: Context,
@@ -25,11 +27,11 @@ class PersonDBRepository(
     override suspend fun readAllPersonMeta(): List<Person.Meta> {
         return access.readAllMeta().map { it.toValue() }
     }
-
-    override suspend fun readAllPerson(id: PersonIdType): Person {
-        return access.read(id).toEntity()
+    override suspend fun readPerson(id: PersonIdType): Person = try {
+        access.read(id).toEntity()
+    } catch (e: Exception) {
+        throw Fizzle.Unknown()
     }
-
     override suspend fun updateManyPerson(persons: List<Person>) {
         access.updateAll(persons.map { it.toModel() })
         updateBlock?.let {

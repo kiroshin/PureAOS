@@ -15,6 +15,6 @@ interface PersonWebWork {
 
 interface PersonDBWork {
     suspend fun readAllPersonMeta(): List<Person.Meta>
-    suspend fun readAllPerson(id: PersonIdType): Person
+    suspend fun readPerson(id: PersonIdType): Person
     suspend fun updateManyPerson(persons: List<Person>)
 }

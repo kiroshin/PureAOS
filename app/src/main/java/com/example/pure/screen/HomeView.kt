@@ -5,17 +5,24 @@
 
 package com.example.pure.screen
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.pure.AppState
 import com.example.pure.Roger
@@ -32,40 +39,51 @@ import kotlinx.coroutines.flow.map
 fun HomeView(appState: AppState, launcher: LaunchViewBlock) {
     val thatState = remember { appState.stored { HomeThat(it) } }
     val isRegion by thatState.map { it.isRegion }.collectAsStateWithLifecycle(initialValue = true)
-    val uiState by thatState.map { when (it.last) {
+    val itemState by thatState.map { when (it.last) {
         Roger.Signal.SUCCESS -> { UiState.Success(it.metas.map { pm -> HomeItem(pm) }) }
         Roger.Signal.FAILURE -> { UiState.Failure("데이터를 로드할 수 없습니다.") }
         else -> { UiState.Ready }
     } }.collectAsStateWithLifecycle(initialValue = UiState.Ready)
 
-    uiState.onSuccess {
-        LazyColumn {
-            if (isRegion) {
-                plainList(it, launcher)
-            } else {
-                plainList(it, launcher)
-            }
+    itemState.onSuccess {
+        if (isRegion) {
+            GroupList(it.groupBy { l -> l.region }, launcher)
+        } else {
+            PlainList(it, launcher)
         }
     }
-    uiState.onFailure {
+    itemState.onFailure {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Text(text = it)
         }
     }
-
 }
 
 
-private fun LazyListScope.groupList(ilist: List<HomeItem>, next: LaunchViewBlock) {
-    items(ilist) {
-        Text(text = it.nick)
-    }
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun GroupList(articles: Map<String, List<HomeItem>>, next: LaunchViewBlock) {
+    LazyColumn { articles.forEach { (group, its) ->
+        stickyHeader {
+            Text(text = group,
+                color = Color.White,
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.surfaceTint)
+                    .padding(5.dp)
+                    .fillMaxWidth())
+        }
+        items(its) {
+            InlineKeyValueCardCell(uid = it.id, key = it.generation, value = it.nick, onClick = next)
+        }
+    } }
 }
 
-
-private fun LazyListScope.plainList(ilist: List<HomeItem>, next: LaunchViewBlock) {
-    items(ilist) {
-        InlineKeyValueCardCell(uid = it.id, key = it.group, value = it.nick, onClick = next)
+@Composable
+private fun PlainList(articles: List<HomeItem>, next: LaunchViewBlock) {
+    LazyColumn {
+        items(articles) {
+            InlineKeyValueCardCell(uid = it.id, key = it.generation, value = it.nick, onClick = next)
+        }
     }
 }
 
@@ -89,12 +107,12 @@ data class HomeItem(
     val age: Int,
     val region: String,
 ) {
-    val group: String get() = when (age) {
+    val generation: String get() = when (age) {
         in 0..<13 -> "KID"
         in 13..19 -> "TEEN"
         in 20..<40 -> "YOUTH"
-        in 40..<50 -> "MIDDLE"
-        in 50..<60 -> "SENIOR"
+        in 40..<60 -> "MIDDLE"
+        in 60..<70 -> "SENIOR"
         else -> "OLD"
     }
     constructor(meta: Person.Meta): this(

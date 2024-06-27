@@ -6,13 +6,20 @@
 package com.example.pure.screen
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.pure.AppState
 import com.example.pure.LoadPersonUsecase
+import com.example.pure.model.Fizzle
+import com.example.pure.model.Person
 import com.example.pure.model.PersonIdType
-import kotlinx.coroutines.launch
+import com.example.pure.util.UiState
+import com.example.pure.util.stored
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 
 class DetailViewModel(private val appState: AppState,
                       private val loadPersonAction: LoadPersonUsecase,
@@ -23,13 +30,47 @@ class DetailViewModel(private val appState: AppState,
         } }
     }
 
-    val target = destID
+    private val dataFlow = flowOf(destID)
+        .map(loadPersonAction)
+        .map { it.toItem() }
+        .flowOn(Dispatchers.IO)
+
+    val itemState = dataFlow
+        .map { UiState.Success(it) as UiState<Item> }
+        .catch { if (it is Fizzle) { emit(UiState.Failure(it.localizedMessage)) } }
+    val isRegionState = appState.stored { it.field.isRegion }
+
+//    init { viewModelScope.launch {
+//    } }
 
     init {
-        println("* INIT DetailViewModel : ${appState}")
-        viewModelScope.launch {
-            val value = loadPersonAction("코코코")
-            println("* 받은값: ${value}")
-        }
+        println("* INIT: DetailViewModel")
+        val j = UiState.Ready
+        val k = UiState.Success("hello")
+        val h = UiState.Failure("")
+        val d = UiState.Loading(27)
     }
+
+    data class Item(
+        var name: String,
+        var username: String,
+        var gender: String,
+        var email: String,
+        var age: String,
+        var region: String,
+        var phone: String,
+        var photo: String
+    )
 }
+
+
+private fun Person.toItem(): DetailViewModel.Item = DetailViewModel.Item(
+    name = name,
+    username = username,
+    gender = gender.name,
+    email = email,
+    age = "${age}",
+    region = country,
+    phone = cellphone ?: "",
+    photo = photo ?: ""
+)

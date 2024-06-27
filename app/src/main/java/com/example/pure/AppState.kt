@@ -28,7 +28,6 @@ data class Roger (
     )
 
     data class Field(
-        val isUsername: Boolean = true,         // 유저네임 필드 보일지 여부
         val isRegion: Boolean = true            // 지역 보일지 여부
     )
 

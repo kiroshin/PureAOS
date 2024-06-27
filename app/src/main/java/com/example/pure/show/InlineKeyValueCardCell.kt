@@ -31,12 +31,12 @@ fun InlineKeyValueCardCell(uid: String, key: String, value: String, onClick: (St
         shape = RoundedCornerShape(4.dp)
     ) {
         Row(
-            modifier = Modifier.height(68.dp),
+            modifier = Modifier.height((4 * 14).dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(text = key,
                 style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(8.dp).width(80.dp)
+                modifier = Modifier.padding(8.dp).width(96.dp)
             )
             Text(text = value,
                 style = MaterialTheme.typography.titleLarge,
