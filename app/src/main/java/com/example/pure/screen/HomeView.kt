@@ -40,7 +40,7 @@ fun HomeView(service: Serving, launcher: LaunchBlock) {
     val isRegion by thatStored.map { it.isRegion }.collectAsStateWithLifecycle(initialValue = true)
     val itemState by thatStored.map { when (it.last) {
         Roger.Signal.SUCCESS -> { UiState.Success(it.metas.map { pm -> HomeItem(pm) }) }
-        Roger.Signal.FAILURE -> { UiState.Failure("데이터를 로드할 수 없습니다.") }
+        Roger.Signal.FAILURE -> { UiState.Failure("Failed to load data!") }
         else -> { UiState.Ready }
     } }.collectAsStateWithLifecycle(initialValue = UiState.Ready)
 
