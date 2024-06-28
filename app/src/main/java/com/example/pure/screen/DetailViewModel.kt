@@ -6,39 +6,40 @@
 package com.example.pure.screen
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.pure.AppState
 import com.example.pure.LoadPersonUsecase
+import com.example.pure.Serving
 import com.example.pure.model.Fizzle
 import com.example.pure.model.Person
 import com.example.pure.model.PersonIdType
 import com.example.pure.util.UiState
 import com.example.pure.util.stored
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
-class DetailViewModel(appState: AppState,
-                      loadPersonAction: LoadPersonUsecase,
-                      destID: PersonIdType): ViewModel() {
+class DetailViewModel(service: Serving, destID: PersonIdType): ViewModel() {
     companion object {
-        fun by(s: AppState, l: LoadPersonUsecase, t: PersonIdType) = viewModelFactory { initializer {
-            DetailViewModel(s, l, t)
+        fun by(s: Serving, t: PersonIdType) = viewModelFactory { initializer {
+            DetailViewModel(s, t)
         } }
     }
 
-    private val dataFlow = flowOf(destID)
+    private val loadPersonAction = service.loadPersonAction
+    val isRegionState = service.appState.stored { it.field.isRegion }
+    val itemState = flowOf(destID)
         .map(loadPersonAction)
         .map { it.toItem() }
         .flowOn(Dispatchers.IO)
-
-    val itemState = dataFlow
         .map { UiState.Success(it) as UiState<Item> }
         .catch { if (it is Fizzle) { emit(UiState.Failure(it.localizedMessage)) } }
-    val isRegionState = appState.stored { it.field.isRegion }
 
 //    init { viewModelScope.launch {
 //    } }

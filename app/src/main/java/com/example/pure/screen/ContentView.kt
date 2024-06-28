@@ -20,7 +20,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import com.example.pure.Serving
@@ -31,12 +30,12 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ContentView(service: Serving) {
-    val sysIsRegionState = remember { service.appState.stored { it.field.isRegion } }
-    val setFieldVisibleAction = remember { service.setFieldVisibleAction }
+    val isRegionState = remember { service.appState.stored { it.field.isRegion } }
+    val applyIsRegionAction = remember { service.applyIsRegionAction }
 
     val navController = rememberNavController()
     val coroutineScope = rememberCoroutineScope()
-    val isRegion by sysIsRegionState.collectAsStateWithLifecycle(initialValue = true)
+    val isRegion by isRegionState.collectAsStateWithLifecycle(initialValue = true)
     var navTitle: String by remember { mutableStateOf("") }
 
     Scaffold(
@@ -45,10 +44,9 @@ fun ContentView(service: Serving) {
             TopAppBar(
                 title = { Text(text = navTitle, style = MaterialTheme.typography.headlineLarge) },
                 actions = {
-                    Text(text = "${isRegion}", modifier = Modifier.padding(horizontal = 8.dp))
                     Switch(checked = isRegion, onCheckedChange = {
                         coroutineScope.launch {
-                            setFieldVisibleAction(it)
+                            applyIsRegionAction(it)
                         }
                     } )
                 }

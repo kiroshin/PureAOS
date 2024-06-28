@@ -7,6 +7,7 @@ package com.example.pure
 
 import android.content.Context
 import androidx.datastore.preferences.core.longPreferencesKey
+import com.example.pure.model.Gender
 import com.example.pure.model.Person
 import com.example.pure.util.MutableStore
 import com.example.pure.util.mxStorage
@@ -17,6 +18,7 @@ import com.example.pure.worker.PersonDBRepository
 import com.example.pure.worker.PersonWebRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -31,7 +33,7 @@ class Vessel(context: Context): MutableStore<Roger> by MutableStateFlow(Roger())
 
     override val appState: AppState get() = this
     override val loadPersonAction: LoadPersonUsecase get() = ::loadPerson
-    override val setFieldVisibleAction: SetFieldVisibleUsecase get() = ::setFieldVisible
+    override val applyIsRegionAction: ApplyIsRegionUsecase get() = ::applyIsRegion
 
     init { loadQuery() }
 
@@ -66,14 +68,17 @@ class Vessel(context: Context): MutableStore<Roger> by MutableStateFlow(Roger())
 
 
 
-//object Raft: Serving {
-//    private val storage: MutableStore<Roger> = MutableStateFlow(Roger())
-//    override val appState: AppState get () = storage
-//    override val loadPersonAction: LoadPersonUsecase get() = usecase@{
-//        delay(2000)
-//        return@usecase Person("ABCD", "Jane", "jjnn", Gender.FEMALE, "jn@abc.com", 19, "KO", "010-1111-2222", "https://randomuser.me/api/portraits/women/5.jpg")
-//    }
-//
-//
-//}
+object Raft: Serving {
+    private val storage: MutableStore<Roger> = MutableStateFlow(Roger())
+    override val appState: AppState get () = storage
+    override val loadPersonAction: LoadPersonUsecase
+        get() = usecase@{
+            delay(2000)
+            return@usecase Person("ABCD", "Jane", "jjnn", Gender.FEMALE, "jn@abc.com", 19, "KO", "010-1111-2222", "https://randomuser.me/api/portraits/women/5.jpg")
+        }
+    override val applyIsRegionAction: ApplyIsRegionUsecase
+        get() = usecase@{ isRegion ->
+            storage.update { it.copy(field = it.field.copy(isRegion = isRegion)) }
+        }
+}
 

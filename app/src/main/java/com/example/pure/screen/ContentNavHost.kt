@@ -12,8 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.pure.Serving
 
-typealias LaunchViewBlock = (String) -> Unit
-
+typealias LaunchBlock = (String) -> Unit
 
 sealed class Navi(val route: String) {
     data object Home: Navi("home")
@@ -31,14 +30,14 @@ fun ContentNavHost(service: Serving,
         modifier = modifier) {
         composable(Navi.Home.route) {
             onTitleChange("Home")
-            HomeView(appState = service.appState, launcher = { id ->
+            HomeView(service, launcher = { id ->
                 navController.navigate(Navi.Detail.route + "/$id")
             } )
         }
         composable(Navi.Detail.route + "/{id}") {
             onTitleChange("Detail")
             it.arguments?.getString("id")?.let {
-                DetailView(appState = service.appState, service.loadPersonAction, it)
+                DetailView(service, target = it)
             }
         }
     }

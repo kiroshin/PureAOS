@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.pure.AppState
 import com.example.pure.Roger
+import com.example.pure.Serving
 import com.example.pure.model.Person
 import com.example.pure.model.PersonIdType
 import com.example.pure.show.InlineKeyValueCardCell
@@ -35,10 +36,10 @@ import com.example.pure.util.stored
 import kotlinx.coroutines.flow.map
 
 @Composable
-fun HomeView(appState: AppState, launcher: LaunchViewBlock) {
-    val rogerThat = remember { appState.stored { HomeThat(it) } }
-    val isRegion by rogerThat.map { it.isRegion }.collectAsStateWithLifecycle(initialValue = true)
-    val itemState by rogerThat.map { when (it.last) {
+fun HomeView(service: Serving, launcher: LaunchBlock) {
+    val thatStored = remember { service.appState.stored { HomeThat(it) } }
+    val isRegion by thatStored.map { it.isRegion }.collectAsStateWithLifecycle(initialValue = true)
+    val itemState by thatStored.map { when (it.last) {
         Roger.Signal.SUCCESS -> { UiState.Success(it.metas.map { pm -> HomeItem(pm) }) }
         Roger.Signal.FAILURE -> { UiState.Failure("데이터를 로드할 수 없습니다.") }
         else -> { UiState.Ready }
@@ -46,9 +47,9 @@ fun HomeView(appState: AppState, launcher: LaunchViewBlock) {
 
     itemState.onSuccess {
         if (isRegion) {
-            GroupList(it.groupBy { l -> l.region }, launcher)
+            GroupListView(it.groupBy { l -> l.region }.toSortedMap(), launcher)
         } else {
-            PlainList(it, launcher)
+            PlainListView(it, launcher)
         }
     }
     itemState.onFailure {
@@ -61,7 +62,7 @@ fun HomeView(appState: AppState, launcher: LaunchViewBlock) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun GroupList(articles: Map<String, List<HomeItem>>, next: LaunchViewBlock) {
+private fun GroupListView(articles: Map<String, List<HomeItem>>, next: LaunchBlock) {
     LazyColumn { articles.forEach { (group, its) ->
         stickyHeader {
             Text(text = group,
@@ -78,7 +79,7 @@ private fun GroupList(articles: Map<String, List<HomeItem>>, next: LaunchViewBlo
 }
 
 @Composable
-private fun PlainList(articles: List<HomeItem>, next: LaunchViewBlock) {
+private fun PlainListView(articles: List<HomeItem>, next: LaunchBlock) {
     LazyColumn {
         items(articles) {
             InlineKeyValueCardCell(uid = it.id, key = it.generation, value = it.nick, onClick = next)
