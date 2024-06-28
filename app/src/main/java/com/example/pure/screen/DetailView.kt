@@ -40,8 +40,8 @@ import com.example.pure.util.onSuccess
 fun DetailView(service: Serving, target: PersonIdType) {
     val viewmodel: DetailViewModel = viewModel(factory = DetailViewModel.by(service, target))
     val scrollState = rememberScrollState()
-    val isRegion by viewmodel.isRegionState.collectAsStateWithLifecycle(initialValue = true)
-    val itemState by viewmodel.itemState.collectAsStateWithLifecycle(initialValue = UiState.Ready)
+    val isRegion by viewmodel.isRegionStored.collectAsStateWithLifecycle(initialValue = true)
+    val itemState by viewmodel.itemStateStored.collectAsStateWithLifecycle(initialValue = UiState.Ready)
 
     Column(
         modifier = Modifier

@@ -11,11 +11,12 @@ import com.example.pure.model.PersonIdType
 interface Serving {
     val appState: AppState
     val loadPersonAction: LoadPersonUsecase
-    val applyIsRegionAction: ApplyIsRegionUsecase
+    val applyRegionAction: ApplyRegionUsecase
+    
 }
 
 
 typealias LoadPersonUsecase = suspend (PersonIdType) -> Person
-typealias ApplyIsRegionUsecase = suspend (Boolean) -> Unit
+typealias ApplyRegionUsecase = suspend (Boolean) -> Unit
 
 

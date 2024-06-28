@@ -33,7 +33,7 @@ class Vessel(context: Context): MutableStore<Roger> by MutableStateFlow(Roger())
 
     override val appState: AppState get() = this
     override val loadPersonAction: LoadPersonUsecase get() = ::loadPerson
-    override val applyIsRegionAction: ApplyIsRegionUsecase get() = ::applyIsRegion
+    override val applyRegionAction: ApplyRegionUsecase get() = ::applyRegion
 
     init { loadQuery() }
 
@@ -76,7 +76,7 @@ object Raft: Serving {
             delay(2000)
             return@usecase Person("ABCD", "Jane", "jjnn", Gender.FEMALE, "jn@abc.com", 19, "KO", "010-1111-2222", "https://randomuser.me/api/portraits/women/5.jpg")
         }
-    override val applyIsRegionAction: ApplyIsRegionUsecase
+    override val applyRegionAction: ApplyRegionUsecase
         get() = usecase@{ isRegion ->
             storage.update { it.copy(field = it.field.copy(isRegion = isRegion)) }
         }

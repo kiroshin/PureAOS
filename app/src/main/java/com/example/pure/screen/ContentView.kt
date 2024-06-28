@@ -30,12 +30,12 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ContentView(service: Serving) {
-    val isRegionState = remember { service.appState.stored { it.field.isRegion } }
-    val applyIsRegionAction = remember { service.applyIsRegionAction }
+    val isRegionStored = remember { service.appState.stored { it.field.isRegion } }
+    val applyRegionAction = remember { service.applyRegionAction }
 
     val navController = rememberNavController()
     val coroutineScope = rememberCoroutineScope()
-    val isRegion by isRegionState.collectAsStateWithLifecycle(initialValue = true)
+    val isRegion by isRegionStored.collectAsStateWithLifecycle(initialValue = true)
     var navTitle: String by remember { mutableStateOf("") }
 
     Scaffold(
@@ -45,9 +45,7 @@ fun ContentView(service: Serving) {
                 title = { Text(text = navTitle, style = MaterialTheme.typography.headlineLarge) },
                 actions = {
                     Switch(checked = isRegion, onCheckedChange = {
-                        coroutineScope.launch {
-                            applyIsRegionAction(it)
-                        }
+                        coroutineScope.launch { applyRegionAction(it) }
                     } )
                 }
             ) },

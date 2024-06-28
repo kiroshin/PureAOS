@@ -6,11 +6,8 @@
 package com.example.pure.screen
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.pure.AppState
-import com.example.pure.LoadPersonUsecase
 import com.example.pure.Serving
 import com.example.pure.model.Fizzle
 import com.example.pure.model.Person
@@ -18,12 +15,10 @@ import com.example.pure.model.PersonIdType
 import com.example.pure.util.UiState
 import com.example.pure.util.stored
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 
 class DetailViewModel(service: Serving, destID: PersonIdType): ViewModel() {
     companion object {
@@ -33,8 +28,8 @@ class DetailViewModel(service: Serving, destID: PersonIdType): ViewModel() {
     }
 
     private val loadPersonAction = service.loadPersonAction
-    val isRegionState = service.appState.stored { it.field.isRegion }
-    val itemState = flowOf(destID)
+    val isRegionStored = service.appState.stored { it.field.isRegion }
+    val itemStateStored = flowOf(destID)
         .map(loadPersonAction)
         .map { it.toItem() }
         .flowOn(Dispatchers.IO)
