@@ -23,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.pure.AppState
 import com.example.pure.Roger
 import com.example.pure.Serving
 import com.example.pure.model.Person

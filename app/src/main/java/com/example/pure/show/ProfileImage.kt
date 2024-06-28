@@ -35,6 +35,7 @@ fun ProfileImage(url: String, text: String, modifier: Modifier = Modifier) {
     )
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun ProfileImage_Preview() {

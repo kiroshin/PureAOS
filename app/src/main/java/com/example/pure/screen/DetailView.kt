@@ -34,6 +34,7 @@ import com.example.pure.show.InlineKeyValueText
 import com.example.pure.show.ProfileImage
 import com.example.pure.util.UiState
 import com.example.pure.util.onFailure
+import com.example.pure.util.onReadyOrLoading
 import com.example.pure.util.onSuccess
 
 @Composable
@@ -54,6 +55,9 @@ fun DetailView(service: Serving, target: PersonIdType) {
         }
         itemState.onFailure {
             Text(text = "== 실패 : ${it} ==")
+        }
+        itemState.onReadyOrLoading {
+            Text(text = "아직...")
         }
         Spacer(modifier = Modifier.padding(8.dp))
     }
@@ -113,5 +117,4 @@ private fun SectionRow(item: DetailViewModel.Item, isRegion: Boolean) {
         InlineKeyValueText("Phone", item.phone, keyWidth, height, textStyle)
     }
 }
-
 
