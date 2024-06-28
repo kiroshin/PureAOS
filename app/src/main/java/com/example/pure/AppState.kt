@@ -6,29 +6,32 @@
 package com.example.pure
 
 import com.example.pure.model.Person
+import com.example.pure.model.PersonIdType
 import com.example.pure.util.Store
 
 typealias AppState = Store<Roger>
 
 data class Roger (
     val sys: Sys = Sys(),
-    val field: Field = Field(),
-    val query: Query = Query()
+    val route: Route = Route(),
+    val query: Query = Query(),
+    val field: Field = Field()
 ) {
     data class Sys(
-        val last: Signal = Signal.READY,        // 초기 데이터 로드 여부
+        val last: Signal = Signal.READY,
     )
 
     data class Route(
-        val uis: String = ""                    // 마지막 선택 유저 ID
+        val uis: PersonIdType = ""
     )
 
     data class Query(
-        val metas: List<Person.Meta> = listOf() // 로드한 메타 데이타
+        val metas: List<Person.Meta> = listOf()
     )
 
     data class Field(
-        val isRegion: Boolean = true            // 지역 보일지 여부
+        val isUsername: Boolean = true,
+        val isRegion: Boolean = true
     )
 
     enum class Signal {

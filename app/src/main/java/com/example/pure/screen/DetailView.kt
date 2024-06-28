@@ -54,10 +54,7 @@ fun DetailView(service: Serving, target: PersonIdType) {
             Content(isRegion = isRegion, item = it, moveText, viewmodel::moveHere)
         }
         itemState.onFailure {
-            Text(text = "== 실패 : ${it} ==")
-        }
-        itemState.onReadyOrLoading {
-            Text(text = "아직...")
+            Text(text = it)
         }
         Spacer(modifier = Modifier.padding(8.dp))
     }

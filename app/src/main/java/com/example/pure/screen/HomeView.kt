@@ -53,7 +53,7 @@ fun HomeView(service: Serving, launcher: LaunchBlock) {
     }
     itemState.onFailure {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text(text = "웁스... ${it}")
+            Text(text = "Oops!... ${it}")
         }
     }
 }

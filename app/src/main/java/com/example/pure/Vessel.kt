@@ -62,7 +62,6 @@ class Vessel(context: Context): MutableStore<Roger> by MutableStateFlow(Roger())
                 )
             }
         }
-        println(appState.value)
     } }
 
     private fun databaseDidUpdate(metas: List<Person.Meta>) {

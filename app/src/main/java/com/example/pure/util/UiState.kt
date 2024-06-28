@@ -5,13 +5,6 @@
 
 package com.example.pure.util
 
-//sealed interface UiState<out T> {
-//    data object Ready : UiState<Nothing>
-//    data class Loading(val permil: Int = 0) : UiState<Nothing>
-//    data class Success<out T>(val value: T) : UiState<T>
-//    data class Failure(val message: String) : UiState<Nothing>
-//}
-
 sealed class UiState<out T> {
     data object Ready : UiState<Nothing>()
     data class Loading(val permil: Int = 0) : UiState<Nothing>()
