@@ -17,7 +17,7 @@ import com.example.pure.screen.ContentView
 import com.example.pure.theme.PureTheme
 
 class MainActivity : ComponentActivity() {
-    lateinit var vessel: Vessel
+    private lateinit var vessel: Vessel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
