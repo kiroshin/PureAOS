@@ -23,10 +23,14 @@ class PersonWebRepository: PersonWebWork {
             it.toEntity()
         } ?: emptyList()
     } catch (e: Throwable){
-        throw Fizzle.WebDataGetFail()
+        println("*** ERROR LOGGING: ${e}")
+        throw Fizzle.WebGetFail()
     }
 
-
+    override suspend fun walk(isLeg: Boolean): String {
+        if (isLeg) { return "LEG" }
+        throw Fizzle.WalkFail()
+    }
 }
 
 

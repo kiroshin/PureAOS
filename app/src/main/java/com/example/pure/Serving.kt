@@ -12,11 +12,10 @@ interface Serving {
     val appState: AppState
     val loadPersonAction: LoadPersonUsecase
     val applyRegionAction: ApplyRegionUsecase
-    
+    val moveHereAction: MoveHereUsecase
 }
-
 
 typealias LoadPersonUsecase = suspend (PersonIdType) -> Person
 typealias ApplyRegionUsecase = suspend (Boolean) -> Unit
-
+typealias MoveHereUsecase = suspend (Boolean, Boolean) -> String
 

@@ -16,7 +16,6 @@ import com.example.pure.model.Fizzle
 import com.example.pure.model.Gender
 import com.example.pure.model.Person
 import com.example.pure.model.PersonIdType
-import java.io.IOException
 
 class PersonDBRepository(
     context: Context,
@@ -37,6 +36,11 @@ class PersonDBRepository(
         updateBlock?.let {
             it(persons.map { ps -> ps.toMeta() })
         }
+    }
+
+    override suspend fun fly(isWing: Boolean): String {
+        if (isWing) { return "WING" }
+        throw Fizzle.NotFly()
     }
 
     // protected fun finalize() = println("* GC KILLED: ${this}")

@@ -41,7 +41,8 @@ fun DetailView(service: Serving, target: PersonIdType) {
     val viewmodel: DetailViewModel = viewModel(factory = DetailViewModel.by(service, target))
     val scrollState = rememberScrollState()
     val isRegion by viewmodel.isRegionStored.collectAsStateWithLifecycle(initialValue = true)
-    val itemState by viewmodel.itemStateStored.collectAsStateWithLifecycle(initialValue = UiState.Ready)
+    val itemState by viewmodel.itemStateFlow.collectAsStateWithLifecycle(initialValue = UiState.Ready)
+    val moveText by viewmodel.moveTextFlow.collectAsStateWithLifecycle()
 
     Column(
         modifier = Modifier
@@ -49,7 +50,7 @@ fun DetailView(service: Serving, target: PersonIdType) {
             .fillMaxWidth()
     ) {
         itemState.onSuccess {
-            Content(isRegion = isRegion, item = it)
+            Content(isRegion = isRegion, item = it, moveText, viewmodel::moveHere)
         }
         itemState.onFailure {
             Text(text = "== 실패 : ${it} ==")
@@ -61,7 +62,28 @@ fun DetailView(service: Serving, target: PersonIdType) {
 
 
 @Composable
-private fun Content(isRegion: Boolean, item: DetailViewModel.Item) {
+private fun Content(isRegion: Boolean, item: DetailViewModel.Item, btnText:String, btnAction: (Boolean) -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        ProfileImage(url = item.photo, text = item.username)
+    }
+    Spacer(modifier = Modifier.padding(vertical = 16.dp))
+    SectionRow(item, isRegion)
+    Button(
+        onClick = { btnAction(isRegion) },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+    ) {
+        Text(text = btnText)
+    }
+    //
+}
+
+@Composable
+private fun SectionRow(item: DetailViewModel.Item, isRegion: Boolean) {
     val height = 4 * 12
     val keyWidth = 4 * 20
     val textStyle = MaterialTheme.typography.titleMedium
@@ -69,15 +91,6 @@ private fun Content(isRegion: Boolean, item: DetailViewModel.Item) {
         .fillMaxWidth()
         .height(1.dp)
         .padding(horizontal = 8.dp)
-
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly
-    ) {
-        ProfileImage(url = item.photo, text = item.username)
-    }
-
-    Spacer(modifier = Modifier.padding(vertical = 16.dp))
 
     Text(text = "Information", modifier = Modifier.padding(start = 16.dp))
     Column(modifier = Modifier
@@ -99,18 +112,6 @@ private fun Content(isRegion: Boolean, item: DetailViewModel.Item) {
         }
         InlineKeyValueText("Phone", item.phone, keyWidth, height, textStyle)
     }
-
-    Button(
-        onClick = { /*TODO*/ },
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-    ) {
-        Text(text = "Hello World")
-    }
-    //
 }
-
-
 
 
