@@ -44,7 +44,7 @@ class DetailViewModel(service: Serving, destID: PersonIdType): ViewModel() {
 
     fun moveHere(isLeg: Boolean) { viewModelScope.launch {
         try {
-            val isWing = moveTextFlow.value.length < 4
+            val isWing = moveTextFlow.value.length < 7
             moveTextFlow.emit(moveHereAction(isLeg, isWing))
         } catch (e: Fizzle) {
             moveTextFlow.emit(e.localizedMessage)
