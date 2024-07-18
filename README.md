@@ -1,4 +1,4 @@
-# Pure
+# PureAOS
 
 ![Architecture](asset-pure-android.jpg)
 

@@ -17,18 +17,18 @@ import com.example.pure.screen.ContentView
 import com.example.pure.theme.PureTheme
 
 class MainActivity : ComponentActivity() {
-    private lateinit var vessel: Vessel
+    private lateinit var service: Vessel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            vessel = Vessel(LocalContext.current.applicationContext)
+            service = Vessel(LocalContext.current.applicationContext)
             PureTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    ContentView(vessel)
+                    ContentView(service)
                 }
             }
         }
