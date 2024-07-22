@@ -19,4 +19,4 @@
   - 양방향도 괜찮아!
 
 
-![Action Flow](/assets/architecture-action-flow.svg)
+![Action Flow](https://kiroshin.github.io/assets/architecture-action-flow.svg)
