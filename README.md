@@ -3,6 +3,7 @@
 ![Architecture](asset-pure-android.jpg)
 
 * [Pure iOS Project](https://github.com/kiroshin/PureIOS)
+* [Pure Python Project](https://github.com/kiroshin/PurePYQ)
 
 클린 아키텍처의 기본적인 사항과 Redux 의 AppState 를 간략화한, 단순하고 직관적인 아키텍처입니다.
 
